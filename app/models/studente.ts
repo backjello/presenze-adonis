@@ -1,6 +1,7 @@
-import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, belongsTo, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
+import Corso from './corso.js'
 import Presence from './presence.js'
 import User from './user.js'
 
@@ -25,6 +26,12 @@ export default class Studente extends BaseModel {
 
   @hasMany(() => Presence)
   declare presenze: HasMany<typeof Presence>
+
+  @manyToMany(() => Corso, {
+    pivotTable: 'corsos_studentes',
+    pivotColumns: ['data_di_iscrizione']
+  })
+  declare corsi: ManyToMany<typeof Corso>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

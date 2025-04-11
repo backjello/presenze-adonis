@@ -1,5 +1,6 @@
 import Studente from '#models/studente'
 import type { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
 
 export default class StudentesController {
 
@@ -8,6 +9,9 @@ export default class StudentesController {
         const student = await Studente.findOrFail(id)
         await student.load('user')
         await student.load('presenze')
+        await student.load('corsi')
+        console.log(student.corsi[0].$extras);
+
         return student
     }
 
@@ -17,6 +21,8 @@ export default class StudentesController {
                 q.where('presenza', true)
                 // escludo tutte le assenze di uno studente
             )
+            .preload('corsi')
+            .preload('user')
         return students
     }
 
