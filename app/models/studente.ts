@@ -15,6 +15,9 @@ export default class Studente extends BaseModel {
   @column()
   declare cognome: string
 
+  @column()
+  declare profilePicture: string
+
   @column.date()
   declare dataDiNascita: DateTime
 
